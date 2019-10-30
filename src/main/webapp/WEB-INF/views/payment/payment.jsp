@@ -195,6 +195,29 @@
                                 <div class="search-icon" data-toggle="modal" data-target="#searchModal">
                                     <i class="icon_search"></i>
                                 </div>
+                                <!-- Login Icon -->
+                          <c:choose>
+                          <c:when test="${empty loginUser }">
+                                  <div class="search-icon" data-toggle="modal" data-target="#loginModal">
+                                      <i class="fa fa-sign-in"></i>
+                                  </div>
+                          </c:when>
+                            <c:otherwise>
+                                  <div class="search-icon" id="user-icon" style="cursor:pointer;">
+                                      <ul>
+                                         <li><i class="fa fa-user"></i>
+                                            <ul>
+                                               <li><a href="/TunaMusic/member/mypage.do">&nbsp&nbspMY PAGE</a></li><br>
+                                               <li><a href="/TunaMusic/member/edit.do">&nbsp&nbspEDIT</a></li><br>
+                                          <li><a href="/TunaMusic/member/logout.do">&nbsp&nbspLOG-OUT</a></li><br>
+                                            </ul>
+                                         </li>
+                                      </ul>
+                                  </div>
+                         </c:otherwise>
+                      </c:choose> 
+                                
+                                
                             </div>
                             <!-- Nav End -->
                         </div>
@@ -263,6 +286,7 @@
                                        	  <c:if test="${!empty sessionScope.loginUser }">
                                        	 	<input type="hidden" id="loginUserCheck" class="loginUserCheck" value="1">
                                        	 </c:if>
+                                       	 <input type="hidden" id="grade" name="grade" value="${sessionScope.loginUser.grade}">
                                        	 
                                        	 <!--원래거  -->
                                        	<!-- <a href="#"  class="btn razo-btn"
@@ -289,14 +313,20 @@
     	$(function(){
 
     		var loginChk = $("#loginUserCheck").val();
+    		var grade = document.getElementById('grade').value;
     			
     		$("#btn_buy").click(function(){
-    			
+    			console.log(grade);
     			if(loginChk == 0){
     				location.href="member/loginPage.do";
     			}else {
-    				window.open('paypop.do','새창','left='+(screen.availWidth-500)/2+',top='+(screen.availHeight-500)/2+',width=500px,height=500px');
+    				if(grade=='B'){
+    					window.open('paymember.do','새창','left='+(screen.availWidth-500)/2+',top='+(screen.availHeight-300)/2+',width=500px,height=300px')
+    				}else{
+    					window.open('paypop.do','새창','left='+(screen.availWidth-500)/2+',top='+(screen.availHeight-500)/2+',width=500px,height=500px');
+    				} 
     			}
+    			
     		});
     	});
     	

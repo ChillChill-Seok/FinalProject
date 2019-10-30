@@ -77,7 +77,7 @@
                         	
                         </c:choose>
                         <div class="app-download-btn" style="width: 400px; height: 100px;">
-                        	<div style="margin-bottom: 4px;">
+                        	<div style="margin-bottom: 3px;">
 	                            <span style="width: 150px" onclick="fnMove('my-music')" class="btn razo-btn btn-2" data-animation="fadeInUpBig" data-delay="700ms">MY MUSIC</span>
 	                            <span style="width: 150px; padding-left: 20px;" onclick="fnMove('fav-music')" class="btn razo-btn btn-2" data-animation="fadeInUpBig" data-delay="700ms">FAVORITE MUSIC</span>
                         	</div>
@@ -170,9 +170,9 @@
                     </div>
                 </div>
                 <div class="col-12">
-                <ul class="lists" id = "payList">
-                    
-                </ul>
+               		<ul class="lists" id = "payList">
+               		
+               		</ul>
                 </div>
         </div>
     </section>

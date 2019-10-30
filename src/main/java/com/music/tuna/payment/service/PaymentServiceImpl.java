@@ -1,10 +1,20 @@
 package com.music.tuna.payment.service;
 
+import java.util.List;
+
+import com.music.tuna.crowdFunding.model.dao.FundingDAO;
 import com.music.tuna.payment.vo.Goods;
+
+import javax.servlet.http.HttpSession;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.music.tuna.member.model.dao.MemberDao;
+import com.music.tuna.member.model.vo.Member;
 import com.music.tuna.payment.dao.PaymentDao;
+import com.music.tuna.payment.vo.Goods;
 import com.music.tuna.payment.vo.Payment;
 
 @Service("pService")
@@ -12,18 +22,25 @@ public class PaymentServiceImpl implements PaymentService{
 
 	@Autowired
 	private PaymentDao pDao;
+	@Autowired
+	private FundingDAO fundingDAO;
 
 	@Override
-	public int payConfirm(String userId) {		
-		int result =  pDao.insertPayment(userId);
+	public Member payConfirm(Member loginUser) {		
+		int result =  pDao.insertPayment(loginUser.getUserId());
+		Member m = new Member();
 		if(result >0) {
-			pDao.updatePaymember(userId);
+			int result2 = pDao.updatePaymember(loginUser);
+			pDao.commit();
+			if(result2 > 0) {
+				/*System.out.println("업데이트x : " + loginUser);*/ // 얘는 C나오는게 맞음
+				m = pDao.selectMember(loginUser);
+				System.out.println("업데이트 해줘...:"+m); // 얘가 B가 나와야해
+			}	
 		}else {
 			System.out.println("아직 무료회원");
 		}
-			
-		pDao.commit();
-		return result;
+		return m;
 	}
 
 
@@ -37,16 +54,21 @@ public class PaymentServiceImpl implements PaymentService{
 	}
 	@Override
 	public int insertfPay(Payment pm) {
-		System.out.println("[pservice] : "+pm.toString());
 		int insert = pDao.insertfPay(pm);
-		System.out.println("[pservice] insertfPay:"+insert);
+		pDao.commit();
 		int update = 0;
 		if(insert>0) {
-			update = pDao.updateFunding(pm);
-			System.out.println("[pservice] updateFunding:"+update);
+			update = fundingDAO.updateFunding(pm);
+			fundingDAO.commit();
 		}
-		pDao.commit();
 		return update;
+	}
+
+
+
+	@Override
+	public List<Payment> getpaymentList(Payment pay) {
+		return pDao.getpaymentList(pay);
 	}
 
 }
